@@ -1,0 +1,5 @@
+module tictactoe.main {
+    requires javafx.controls;
+    requires javafx.fxml;
+    opens com.company;
+}

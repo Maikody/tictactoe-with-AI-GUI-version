@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ButtonType?>
+<?import javafx.scene.control.DialogPane?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<DialogPane prefHeight="150.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.company.DialogController">
+
+    <headerText>
+        Choose your opponent/game difficulty
+    </headerText>
+    <content>
+        <GridPane hgap="10.0">
+            <Label text="Player 1: " alignment="CENTER_RIGHT" GridPane.halignment="RIGHT"/>
+            <fx:define>
+                <ToggleGroup fx:id="player1"/>
+            </fx:define>
+            <RadioButton text="User" toggleGroup="$player1" GridPane.columnIndex="1"/>
+            <RadioButton text="AI - Level easy" toggleGroup="$player1" GridPane.columnIndex="2"/>
+            <RadioButton text="AI - Level medium" toggleGroup="$player1" GridPane.columnIndex="3"/>
+            <RadioButton text="AI - Level hard" toggleGroup="$player1" GridPane.columnIndex="4"/>
+
+            <Label text="Player 2: " GridPane.halignment="RIGHT" GridPane.rowIndex="1"/>
+            <fx:define>
+                <ToggleGroup fx:id="player2"/>
+            </fx:define>
+            <RadioButton text="User" toggleGroup="$player2" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+            <RadioButton text="AI - Level easy" toggleGroup="$player2" GridPane.columnIndex="2" GridPane.rowIndex="1"/>
+            <RadioButton text="AI - Level medium" toggleGroup="$player2" GridPane.columnIndex="3"
+                         GridPane.rowIndex="1"/>
+            <RadioButton text="AI - Level hard" toggleGroup="$player2" GridPane.columnIndex="4" GridPane.rowIndex="1"/>
+
+            <rowConstraints>
+                <RowConstraints minHeight="-Infinity" prefHeight="40.0"/>
+                <RowConstraints minHeight="-Infinity" prefHeight="40.0"/>
+            </rowConstraints>
+        </GridPane>
+    </content>
+    <padding>
+        <Insets left="10.0" top="5.0"/>
+    </padding>
+
+</DialogPane>
