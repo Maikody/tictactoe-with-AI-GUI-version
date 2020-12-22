@@ -17,105 +17,37 @@ public class DialogController {
         String player2Data = player2Button.getText().toUpperCase();
         System.out.println("Player 1: " + player1Data);
         System.out.println("Player 2: " + player2Data);
-        return choosePlayersOfGame(player1Data, player2Data);
+        Object player1 = choosePlayer(player1Data);
+        Object player2 = choosePlayer(player2Data);
+
+        return new Object[]{player1, player2};
     }
 
-    public Object[] choosePlayersOfGame(String player1, String player2){
-        if(player1.equals("USER") && player2.equals("USER")) {
-            return new Object[]{new User("User 1"), new User("User 2")};
+    public Object choosePlayer(String player){
+        User user = null;
+        AI ai = null;
+        switch (player) {
+            case ("USER"):
+                user = new User("User");
+                break;
+            case ("AI - LEVEL EASY"):
+                ai = new AI(AI.Level.EASY);
+                break;
+            case ("AI - LEVEL MEDIUM"):
+                ai= new AI(AI.Level.MEDIUM);
+                break;
+            case ("AI - LEVEL HARD"):
+                ai = new AI(AI.Level.HARD);
+                break;
         }
-        if (player1.equals("USER") && player2.equals("AI - LEVEL EASY")) {
-            AI opponentAI = new AI();
-            opponentAI.setLevel(AI.Level.EASY);
-            return new Object[]{new User("User 1"), opponentAI};
-        }
-        if (player1.equals("USER") && player2.equals("AI - LEVEL MEDIUM")) {
-            AI opponentAI = new AI();
-            opponentAI.setLevel(AI.Level.MEDIUM);
-            return new Object[]{new User("User 1"), opponentAI};
-        }
-        if (player1.equals("USER") && player2.equals("AI - LEVEL HARD")) {
-            AI opponentAI = new AI();
-            opponentAI.setLevel(AI.Level.HARD);
-            return new Object[]{new User("User 1"), opponentAI};
-        }
-        if (player1.equals("AI - LEVEL EASY") && player2.equals("USER")) {
-            AI playerAI = new AI();
-            playerAI.setLevel(AI.Level.EASY);
-            return new Object[]{playerAI, new User("User 2")};
-        }
-        if (player1.equals("AI - LEVEL MEDIUM") && player2.equals("AI - LEVEL USER")) {
-            AI playerAI = new AI();
-            playerAI.setLevel(AI.Level.MEDIUM);
-            return new Object[]{playerAI, new User("User 2")};
-        }
-        if (player1.equals("AI - LEVEL HARD") && player2.equals("USER")) {
-            AI playerAI = new AI();
-            playerAI.setLevel(AI.Level.HARD);
-            return new Object[]{playerAI, new User("User 2")};
-        }
-        if (player1.equals("AI - LEVEL EASY") && player2.equals("AI - LEVEL EASY")) {
-            AI playerAI = new AI();
-            playerAI.setLevel(AI.Level.EASY);
-            AI opponentAI = new AI();
-            opponentAI.setLevel(AI.Level.EASY);
-            return new Object[]{playerAI, opponentAI};
-        }
-        if (player1.equals("AI - LEVEL MEDIUM") && player2.equals("AI - LEVEL MEDIUM")) {
-            AI playerAI = new AI();
-            playerAI.setLevel(AI.Level.MEDIUM);
-            AI opponentAI = new AI();
-            opponentAI.setLevel(AI.Level.MEDIUM);
-            return new Object[]{playerAI, opponentAI};
-        }
-        if (player1.equals("AI - LEVEL HARD") && player2.equals("AI - LEVEL HARD")) {
-            AI playerAI = new AI();
-            playerAI.setLevel(AI.Level.HARD);
-            AI opponentAI = new AI();
-            opponentAI.setLevel(AI.Level.HARD);
-            return new Object[]{playerAI, opponentAI};
-        }
-        if (player1.equals("AI - LEVEL EASY") && player2.equals("AI - LEVEL MEDIUM")) {
-            AI playerAI = new AI();
-            playerAI.setLevel(AI.Level.EASY);
-            AI opponentAI = new AI();
-            opponentAI.setLevel(AI.Level.MEDIUM);
-            return new Object[]{playerAI, opponentAI};
-        }
-        if (player1.equals("AI - LEVEL MEDIUM") && player2.equals("AI - LEVEL EASY")) {
-            AI playerAI = new AI();
-            playerAI.setLevel(AI.Level.MEDIUM);
-            AI opponentAI = new AI();
-            opponentAI.setLevel(AI.Level.EASY);
-            return new Object[]{playerAI, opponentAI};
-        }
-        if (player1.equals("AI - LEVEL EASY") && player2.equals("AI - LEVEL HARD")) {
-            AI playerAI = new AI();
-            playerAI.setLevel(AI.Level.EASY);
-            AI opponentAI = new AI();
-            opponentAI.setLevel(AI.Level.HARD);
-            return new Object[]{playerAI, opponentAI};
-        }
-        if (player1.equals("AI - LEVEL HARD") && player2.equals("AI - LEVEL EASY")) {
-            AI playerAI = new AI();
-            playerAI.setLevel(AI.Level.HARD);
-            AI opponentAI = new AI();
-            opponentAI.setLevel(AI.Level.EASY);
-            return new Object[]{playerAI, opponentAI};
-        }
-        if (player1.equals("AI - LEVEL MEDIUM") && player2.equals("AI - LEVEL HARD")) {
-            AI playerAI = new AI();
-            playerAI.setLevel(AI.Level.MEDIUM);
-            AI opponentAI = new AI();
-            opponentAI.setLevel(AI.Level.HARD);
-            return new Object[]{playerAI, opponentAI};
+        Object playerObject;
+        if (ai != null) {
+            playerObject = ai;
+        } else {
+            playerObject = user;
         }
 
-        AI playerAI = new AI();
-        playerAI.setLevel(AI.Level.HARD);
-        AI opponentAI = new AI();
-        opponentAI.setLevel(AI.Level.MEDIUM);
-        return new Object[]{playerAI, opponentAI};
+        return playerObject;
     }
 
 }

@@ -9,9 +9,8 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Dialog;
-import javafx.scene.control.MenuItem;
+import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
@@ -26,8 +25,8 @@ import java.util.Random;
 
 public class TicTacToeApp extends Application {
     private static Board board;
-
     private static GridPane tiles;
+    private static AnimationTimer gameTimer;
 
     @FXML
     public BorderPane root;
@@ -44,11 +43,12 @@ public class TicTacToeApp extends Application {
         generatePlayBoard();
         primaryStage.setTitle("TicTacToe Game");
         primaryStage.setScene(new Scene(root, 600, 600));
+        URL iconURL = Paths.get("largeIcon.png").toUri().toURL();
+        primaryStage.getIcons().add(new Image(iconURL.toString()));
+
         primaryStage.show();
 
         Object[] players = showNewGameDialog();
-        System.out.println(players[0].getClass().getSimpleName());
-        System.out.println(players[1].getClass().getSimpleName());
 
         gameLoop(players);
     }
@@ -116,31 +116,15 @@ public class TicTacToeApp extends Application {
         }
     }
 
-    private void gameLooop() {
-        AI ai = new AI();
-        ai.setLevel(AI.Level.EASY);
-        new AnimationTimer() {
-            @Override
-            public void handle(long now) {
-                if (board.checkStateOfTheGame()) {
-                    System.out.println("End of the game!");
-                } else {
-                    if (board.isOpponentTurn()) {
-                        moveAI(ai, "O");
-                    }
-                }
-            }
-        }.start();
-    }
-
     public void gameLoop(Object[] players) {
         if (players[0] instanceof AI && players[1] instanceof AI) {
             AI player1 = (AI) players[0];
             AI player2 = (AI) players[1];
-            new AnimationTimer() {
+            gameTimer = new AnimationTimer() {
                 @Override
                 public void handle(long now) {
                     if (board.checkStateOfTheGame()) {
+                        endGame();
                         System.out.println("End of the game!");
                     } else {
                         if (!board.isOpponentTurn()) {
@@ -150,13 +134,15 @@ public class TicTacToeApp extends Application {
                         }
                     }
                 }
-            }.start();
+            };
+            gameTimer.start();
         } else if (players[0] instanceof User && players[1] instanceof AI) {
             AI player2 = (AI) players[1];
-            new AnimationTimer() {
+            gameTimer = new AnimationTimer() {
                 @Override
                 public void handle(long now) {
                     if (board.checkStateOfTheGame()) {
+                        endGame();
                         System.out.println("End of the game!");
                     } else {
                         if (board.isOpponentTurn()) {
@@ -164,13 +150,15 @@ public class TicTacToeApp extends Application {
                         }
                     }
                 }
-            }.start();
+            };
+            gameTimer.start();
         } else if (players[0] instanceof AI && players[1] instanceof User) {
             AI player1 = (AI) players[0];
-            new AnimationTimer() {
+            gameTimer = new AnimationTimer() {
                 @Override
                 public void handle(long now) {
                     if (board.checkStateOfTheGame()) {
+                        endGame();
                         System.out.println("End of the game!");
                     } else {
                         if (!board.isOpponentTurn()) {
@@ -178,11 +166,44 @@ public class TicTacToeApp extends Application {
                         }
                     }
                 }
-            }.start();
+            };
+            gameTimer.start();
         } else if (players[0] instanceof User && players[1] instanceof User) {
             System.out.println("Both users");
+            gameTimer = new AnimationTimer() {
+                @Override
+                public void handle(long now) {
+                    if (board.checkStateOfTheGame()) {
+                        endGame();
+                        System.out.println("End of the game!");
+                    }
+                }
+            };
+            gameTimer.start();
+        }
+    }
+
+    private void endGame() {
+        gameTimer.stop();
+
+        Alert gameOverAlert = new Alert(Alert.AlertType.INFORMATION, "", new ButtonType("New Game"));
+        gameOverAlert.setTitle("Game Over");
+        gameOverAlert.setHeaderText(null);
+
+        String winner = board.getWinner();
+        if (winner.equals(" ")) {
+            gameOverAlert.setContentText("Draw!");
+        } else {
+            gameOverAlert.setContentText(winner + " wins!");
         }
 
+        gameOverAlert.setOnHidden(e -> {
+            gameOverAlert.close();
+            generatePlayBoard();
+            gameLoop(showNewGameDialog());
+        });
+
+        gameOverAlert.show();
     }
 
 }

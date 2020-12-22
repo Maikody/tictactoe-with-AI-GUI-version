@@ -4,6 +4,7 @@ public class Board {
 
     private final Field[][] gameField;
     private boolean opponentTurn = false;
+    private String winner;
 
     public Board() {
         this.gameField = new Field[3][3];
@@ -36,7 +37,7 @@ public class Board {
 
     public boolean markSymbol(int firstCoordinate, int secondCoordinate) {
         if (firstCoordinate > 3 || firstCoordinate < 0
-                || secondCoordinate > 3 || secondCoordinate < 0 || !gameField[firstCoordinate][secondCoordinate].getSymbol().equals(" ")){
+                || secondCoordinate > 3 || secondCoordinate < 0 || gameField[firstCoordinate][secondCoordinate].isMarked()){
             return false;
         }
 
@@ -85,10 +86,12 @@ public class Board {
             }
             if (xInRowCounter == 3) {
                 System.out.println("X wins\n");
+                winner = "X";
                 return true;
             }
             if (oInRowCounter == 3) {
                 System.out.println("O wins\n");
+                winner = "O";
                 return true;
             }
             xInRowCounter = 0;
@@ -108,10 +111,12 @@ public class Board {
             }
             if (xInRowCounter == 3) {
                 System.out.println("X wins\n");
+                winner = "X";
                 return true;
             }
             if (oInRowCounter == 3) {
                 System.out.println("O wins\n");
+                winner = "O";
                 return true;
             }
             xInRowCounter = 0;
@@ -132,10 +137,12 @@ public class Board {
         }
         if (xInRowCounter == 3) {
             System.out.println("X wins\n");
+            winner = "X";
             return true;
         }
         if (oInRowCounter == 3) {
             System.out.println("O wins\n");
+            winner = "O";
             return true;
         }
 
@@ -153,10 +160,12 @@ public class Board {
         }
         if (xInRowCounter == 3) {
             System.out.println("X wins\n");
+            winner = "X";
             return true;
         }
         if (oInRowCounter == 3) {
             System.out.println("O wins\n");
+            winner = "O";
             return true;
         }
 
@@ -169,7 +178,11 @@ public class Board {
         }
 
         System.out.println("Draw\n");
+        winner = " ";
         return true;
     }
 
+    public String getWinner() {
+        return winner;
+    }
 }

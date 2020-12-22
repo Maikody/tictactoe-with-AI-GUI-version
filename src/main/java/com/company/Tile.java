@@ -28,6 +28,7 @@ public class Tile extends Button {
 //            }
         });
     }
+
     public String getSymbol() {
         return symbol;
     }

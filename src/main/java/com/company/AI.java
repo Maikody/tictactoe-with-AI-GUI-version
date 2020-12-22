@@ -12,9 +12,9 @@ public class AI {
         HARD
     }
 
-    Level level;
+    private final Level level;
 
-    public void setLevel(Level level) {
+    public AI(Level level) {
         this.level = level;
     }
 
@@ -334,11 +334,7 @@ public class AI {
                 }
             }
         }
-        if (inRowCounter == 3) {
-            return true;
-        }
-
-        return false;
+        return inRowCounter == 3;
     }
 
 }
