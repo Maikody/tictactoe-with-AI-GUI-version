@@ -26,14 +26,8 @@ public class Tile extends Button {
                 board.markSymbol(this.rowIndex, this.columnIndex);
                 setText("" + board.getSymbolAtField(this.rowIndex, this.columnIndex));
 //            }
+
         });
     }
 
-    public String getSymbol() {
-        return symbol;
-    }
-
-    public void setSymbol(String symbol) {
-        this.symbol = symbol;
-    }
 }

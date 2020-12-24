@@ -5,23 +5,18 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Group;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Paths;
 import java.util.Optional;
-import java.util.Random;
 
 public class TicTacToeApp extends Application {
     private static Board board;
@@ -79,7 +74,7 @@ public class TicTacToeApp extends Application {
             URL url = Paths.get("src/main/resources/NewGameDialog.fxml").toUri().toURL();
             fxmlLoader.setLocation(url);
             dialog.getDialogPane().setContent(fxmlLoader.load());
-        }catch (IOException e){
+        } catch (IOException e){
             e.printStackTrace();
         }
 
@@ -103,17 +98,18 @@ public class TicTacToeApp extends Application {
         Platform.exit();
     }
 
-    private void moveAI(AI ai, String symbol) {
-        int[] move = ai.move(board.getGameField(), symbol);
+    private void moveAI(AI ai) {
+        ai.setAiSymbol(board.getTurn());
+        int[] move = ai.move(board.getGameField());
         board.markSymbol(move[0], move[1]);
         for (Node child : tiles.getChildren()) {
-                if (GridPane.getRowIndex(child) == move[0]
-                    && GridPane.getColumnIndex(child) == move[1]) {
-                    Tile t = (Tile) child;
-                    t.setText("" + board.getSymbolAtField(move[0], move[1]));
-                    return;
+            if (GridPane.getRowIndex(child) == move[0] && GridPane.getColumnIndex(child) == move[1]) {
+                Tile t = (Tile) child;
+                t.setText("" + board.getSymbolAtField(move[0], move[1]));
+                return;
             }
         }
+        board.swapTurn();
     }
 
     public void gameLoop(Object[] players) {
@@ -127,11 +123,8 @@ public class TicTacToeApp extends Application {
                         endGame();
                         System.out.println("End of the game!");
                     } else {
-                        if (!board.isOpponentTurn()) {
-                            moveAI(player1,"X");
-                        } else {
-                            moveAI(player2,"O");
-                        }
+                            moveAI(player1);
+                            moveAI(player2);
                     }
                 }
             };
@@ -145,9 +138,8 @@ public class TicTacToeApp extends Application {
                         endGame();
                         System.out.println("End of the game!");
                     } else {
-                        if (board.isOpponentTurn()) {
-                            moveAI(player2,"O");
-                        }
+                        if(board.getTurn().equals("O"))
+                            moveAI(player2);
                     }
                 }
             };
@@ -161,9 +153,8 @@ public class TicTacToeApp extends Application {
                         endGame();
                         System.out.println("End of the game!");
                     } else {
-                        if (!board.isOpponentTurn()) {
-                            moveAI(player1,"X");
-                        }
+                        if(board.getTurn().equals("X"))
+                            moveAI(player1);
                     }
                 }
             };

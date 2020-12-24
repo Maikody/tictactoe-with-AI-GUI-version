@@ -12,61 +12,60 @@ public class AI {
         HARD
     }
 
+    private String aiSymbol;
     private final Level level;
 
     public AI(Level level) {
         this.level = level;
     }
 
-    public int[] move(Field[][] gameField, String symbol) {
+    public void setAiSymbol(String aiSymbol) {
+        this.aiSymbol = aiSymbol;
+    }
+
+    public int[] move(Field[][] gameField) {
 
         System.out.println("Move by level \""+ level.name().toLowerCase() +"\":");
-        int computerFirstCoordinate;
-        int computerSecondCoordinate;
+        int computerFirstCoordinate = 0;
+        int computerSecondCoordinate = 0;
 
-        String opponentSymbol;
-        if(symbol.equals("X")) {
-            opponentSymbol = "O";
-        } else {
-            opponentSymbol = "X";
-        }
+        String opponentSymbol = aiSymbol.toUpperCase().equals("X") ? "O" : "X";
 
         Random random = new Random();
+        List<int[]> freeSpots = getAvailableSpots(gameField);
 
-        if (this.level == Level.EASY) {
-            while (true) {
-                computerFirstCoordinate = random.nextInt(3);
-                computerSecondCoordinate = random.nextInt(3);
-                if (!gameField[computerFirstCoordinate][computerSecondCoordinate].getSymbol().equals(" ")) {
-                    continue;
+        switch (this.level) {
+            case EASY:
+                int[] easyMove = freeSpots.get(random.nextInt(freeSpots.size()));
+                computerFirstCoordinate = easyMove[0];
+                computerSecondCoordinate = easyMove[1];
+                break;
+            case MEDIUM:
+                int[] computerMediumMoves = chooseNextMoveLevelMedium(gameField, aiSymbol);
+                int[] opponentMediumMoves = chooseNextMoveLevelMedium(gameField, opponentSymbol);
+                if (computerMediumMoves[0] == 0 && opponentMediumMoves[0] == 0) {
+                    int[] mediumMove = freeSpots.get(random.nextInt(freeSpots.size()));
+                    computerFirstCoordinate = mediumMove[0];
+                    computerSecondCoordinate = mediumMove[1];
+                } else if (computerMediumMoves[0] != 0 && opponentMediumMoves[0] == 0) {
+                    computerFirstCoordinate = computerMediumMoves[0];
+                    computerSecondCoordinate = computerMediumMoves[1];
+                } else {
+                    computerFirstCoordinate = opponentMediumMoves[0];
+                    computerSecondCoordinate = opponentMediumMoves[1];
                 }
                 break;
-            }
-        } else if (this.level == Level.MEDIUM) {
-            int[] computerMoves = chooseNextMoveLevelMedium(gameField, symbol);
-            int[] opponentMoves = chooseNextMoveLevelMedium(gameField, opponentSymbol);
-            if (computerMoves[0] == 0 && opponentMoves[0] == 0) {
-                while(true) {
-                    computerFirstCoordinate = random.nextInt(3);
-                    computerSecondCoordinate = random.nextInt(3);
-                    if (!gameField[computerFirstCoordinate][computerSecondCoordinate].getSymbol().equals(" ")) {
-                        continue;
-                    }
-                    break;
+            case HARD:
+                if (freeSpots.size() == 9) {
+                    int[] hardFirstMove = freeSpots.get(random.nextInt(freeSpots.size()));
+                    computerFirstCoordinate = hardFirstMove[0];
+                    computerSecondCoordinate = hardFirstMove[1];
+                } else {
+                    int[] computerHardMoves = bestMoveLevelHard(gameField);
+                    computerFirstCoordinate = computerHardMoves[0];
+                    computerSecondCoordinate = computerHardMoves[1];
                 }
-            } else if (computerMoves[0] != 0 && opponentMoves[0] == 0) {
-                computerFirstCoordinate = computerMoves[0];
-                computerSecondCoordinate = computerMoves[1];
-
-            }
-            else {
-                computerFirstCoordinate = opponentMoves[0];
-                computerSecondCoordinate = opponentMoves[1];
-            }
-        } else {
-            int[] computerMoves = bestMoveLevelHard(gameField, symbol);
-            computerFirstCoordinate = computerMoves[0];
-            computerSecondCoordinate = computerMoves[1];
+                break;
         }
         return new int[]{computerFirstCoordinate, computerSecondCoordinate};
     }
@@ -154,132 +153,70 @@ public class AI {
         return new int[]{0, 0};
     }
 
-    public int[] bestMoveLevelHard(Field[][] gameField, String symbol){
-        int[] move = new int[2];
+
+    public int[] bestMoveLevelHard(Field[][] gameField) {
+        int[] bestMove = new int[2];
 
         int bestScore = Integer.MIN_VALUE;
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 if (gameField[i][j].getSymbol().equals(" ")) {
-                    gameField[i][j].setSymbol(symbol);
-                    int score;
-                    if(symbol.equals("X")) {
-                        score = minimaxX(gameField, false);
-                    } else {
-                        score = minimaxO(gameField, false);
-                    }
+                    gameField[i][j].setSymbol(aiSymbol);
+                    int score = miniMax(gameField, false);
                     gameField[i][j].setSymbol(" ");
                     if (score > bestScore) {
                         bestScore = score;
-                        move[0] = i;
-                        move[1] = j;
+                        bestMove[0] = i;
+                        bestMove[1] = j;
                     }
                 }
             }
         }
 
-        return move;
+        return bestMove;
     }
 
-    public int minimaxX(Field[][] gameField, boolean isMaximizing){
+    public int miniMax(Field[][] gameField, boolean isMaximizing){
 
-        List<int[]> availableSpots = new ArrayList<>();
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                if (gameField[i][j].getSymbol().equals(" ")) {
-                    availableSpots.add(new int[]{i, j});
-                }
-            }
-        }
+        String opponentSymbol = aiSymbol.toUpperCase().equals("X") ? "O" : "X";
 
-        if (checkIfWinning(gameField, "X")) {
+        if (checkIfWinning(gameField, aiSymbol)) {
             return 10;
         }
-        else if (checkIfWinning(gameField, "O")) {
+        else if (checkIfWinning(gameField, opponentSymbol)) {
             return -10;
         }
-        else if (availableSpots.size() == 0) {
+        else if (getAvailableSpots(gameField).size() == 0) {
             return 0;
         }
 
-        int bestScore;
         if (isMaximizing) {
-            bestScore = Integer.MIN_VALUE;
+            int bestScore = Integer.MIN_VALUE;
             for (int i = 0; i < 3; i++) {
                 for (int j = 0; j < 3; j++) {
                     if (gameField[i][j].getSymbol().equals(" ")) {
-                        gameField[i][j].setSymbol("X");
-                        int score = minimaxX(gameField, false);
+                        gameField[i][j].setSymbol(aiSymbol);
+                        int score = miniMax(gameField, false);
                         gameField[i][j].setSymbol(" ");
                         bestScore = Math.max(score, bestScore);
                     }
                 }
             }
+            return bestScore;
         } else {
-            bestScore = Integer.MAX_VALUE;
+            int bestScore = Integer.MAX_VALUE;
             for (int i = 0; i < 3; i++) {
                 for (int j = 0; j < 3; j++) {
                     if (gameField[i][j].getSymbol().equals(" ")) {
-                        gameField[i][j].setSymbol("O");
-                        int score = minimaxX(gameField, true);
+                        gameField[i][j].setSymbol(opponentSymbol);
+                        int score = miniMax(gameField, true);
                         gameField[i][j].setSymbol(" ");
                         bestScore = Math.min(score, bestScore);
                     }
                 }
             }
+            return bestScore;
         }
-        return bestScore;
-    }
-
-
-    public int minimaxO(Field[][] gameField, boolean isMaximizing){
-
-        List<int[]> availableSpots = new ArrayList<>();
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                if (gameField[i][j].getSymbol().equals(" ")) {
-                    availableSpots.add(new int[]{i, j});
-                }
-            }
-        }
-
-        if (checkIfWinning(gameField,"O")) {
-            return 10;
-        }
-        else if (checkIfWinning(gameField,"X")) {
-            return -10;
-        }
-        else if (availableSpots.size() == 0) {
-            return 0;
-        }
-
-        int bestScore;
-        if (isMaximizing) {
-            bestScore = Integer.MIN_VALUE;
-            for (int i = 0; i < 3; i++) {
-                for (int j = 0; j < 3; j++) {
-                    if (gameField[i][j].getSymbol().equals(" ")) {
-                        gameField[i][j].setSymbol("O");
-                        int score = minimaxO(gameField, false);
-                        gameField[i][j].setSymbol(" ");
-                        bestScore = Math.max(score, bestScore);
-                    }
-                }
-            }
-        } else {
-            bestScore = Integer.MAX_VALUE;
-            for (int i = 0; i < 3; i++) {
-                for (int j = 0; j < 3; j++) {
-                    if (gameField[i][j].getSymbol().equals(" ")) {
-                        gameField[i][j].setSymbol("X");
-                        int score = minimaxO(gameField, true);
-                        gameField[i][j].setSymbol(" ");
-                        bestScore = Math.min(score, bestScore);
-                    }
-                }
-            }
-        }
-        return bestScore;
     }
 
     public boolean checkIfWinning(Field[][] gameField, String symbol) {
@@ -337,4 +274,15 @@ public class AI {
         return inRowCounter == 3;
     }
 
+    public List<int[]> getAvailableSpots(Field[][] gameField) {
+        List<int[]> availableSpots = new ArrayList<>();
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                if (gameField[i][j].getSymbol().equals(" ")) {
+                    availableSpots.add(new int[]{i, j});
+                }
+            }
+        }
+        return availableSpots;
+    }
 }

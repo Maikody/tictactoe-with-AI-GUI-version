@@ -3,12 +3,20 @@ package com.company;
 public class Board {
 
     private final Field[][] gameField;
-    private boolean opponentTurn = false;
+    private String turn = "X";
     private String winner;
 
     public Board() {
         this.gameField = new Field[3][3];
         generateGameField();
+    }
+
+    public void swapTurn(){
+        turn = turn.equals("X") ? "O" : "X";
+    }
+
+    public String getTurn() {
+        return turn;
     }
 
     private void generateGameField() {
@@ -27,10 +35,6 @@ public class Board {
         return gameField[rowIndex][columnIndex].getSymbol();
     }
 
-    public void setSymbolAtField(int rowIndex, int columnIndex, String symbol) {
-        this.gameField[rowIndex][columnIndex].setSymbol(symbol);
-    }
-
     public boolean isFieldMarked(int rowIndex, int columnIndex) {
         return this.gameField[rowIndex][columnIndex].isMarked();
     }
@@ -41,35 +45,32 @@ public class Board {
             return false;
         }
 
-        int xCounter = 0;
-        int yCounter = 0;
+//        int xCounter = 0;
+//        int yCounter = 0;
+//
+//        for (int i = 0; i < 3; i++) {
+//            for (int j = 0; j < 3; j++) {
+//                if (gameField[i][j].getSymbol().equals("X")) {
+//                    xCounter++;
+//                } else if (gameField[i][j].getSymbol().equals("O")) {
+//                    yCounter++;
+//                }
+//            }
+//        }
+//
+//        String symbol;
+//        if (xCounter == yCounter) {
+//            symbol = "X";
+//        } else {
+//            symbol = "O";
+//        }
 
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                if (gameField[i][j].getSymbol().equals("X")) {
-                    xCounter++;
-                } else if (gameField[i][j].getSymbol().equals("O")) {
-                    yCounter++;
-                }
-            }
-        }
-
-        String symbol;
-        if (xCounter == yCounter) {
-            symbol = "X";
-        } else {
-            symbol = "O";
-        }
-
-        gameField[firstCoordinate][secondCoordinate].setSymbol(symbol);
-        opponentTurn = !opponentTurn;
+        gameField[firstCoordinate][secondCoordinate].setSymbol(turn);
+        swapTurn();
 
         return true;
     }
 
-    public boolean isOpponentTurn() {
-        return opponentTurn;
-    }
 
     public boolean checkStateOfTheGame() {
         int xInRowCounter = 0;
