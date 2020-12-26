@@ -123,8 +123,8 @@ public class TicTacToeApp extends Application {
                         endGame();
                         System.out.println("End of the game!");
                     } else {
-                            moveAI(player1);
-                            moveAI(player2);
+                        moveAI(player1);
+                        moveAI(player2);
                     }
                 }
             };

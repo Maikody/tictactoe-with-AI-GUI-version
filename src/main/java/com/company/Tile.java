@@ -8,25 +8,20 @@ import javafx.scene.text.TextAlignment;
 public class Tile extends Button {
     private final int rowIndex;
     private final int columnIndex;
-    private String symbol;
 
     public Tile(int rowIndex, int columnIndex, String symbol, Board board) {
         this.rowIndex = rowIndex;
         this.columnIndex = columnIndex;
-        this.symbol = symbol;
 
         setPrefSize(200.0, 200.0);
         setAlignment(Pos.CENTER);
         setFont(Font.font(80));
         setTextAlignment(TextAlignment.CENTER);
-        setText("" + this.symbol);
+        setText(symbol);
 
-        setOnMouseClicked(event ->{
-//            if(!board.isOpponentTurn()) {
-                board.markSymbol(this.rowIndex, this.columnIndex);
-                setText("" + board.getSymbolAtField(this.rowIndex, this.columnIndex));
-//            }
-
+        setOnMouseClicked(event -> {
+            board.markSymbol(this.rowIndex, this.columnIndex);
+            setText(board.getSymbolAtField(this.rowIndex, this.columnIndex));
         });
     }
 

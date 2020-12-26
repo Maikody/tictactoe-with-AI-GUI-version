@@ -23,7 +23,7 @@ public class AI {
         this.aiSymbol = aiSymbol;
     }
 
-    public int[] move(Field[][] gameField) {
+    public int[] move(String[][] gameField) {
 
         System.out.println("Move by level \""+ level.name().toLowerCase() +"\":");
         int computerFirstCoordinate = 0;
@@ -70,22 +70,22 @@ public class AI {
         return new int[]{computerFirstCoordinate, computerSecondCoordinate};
     }
 
-    public int[] chooseNextMoveLevelMedium(Field[][] gameField, String symbol) {
+    public int[] chooseNextMoveLevelMedium(String[][] gameField, String symbol) {
         int inRowCounter = 0;
 
         /* In row check */
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                if (gameField[i][j].getSymbol().equals(symbol)) {
+                if (gameField[i][j].equals(symbol)) {
                     inRowCounter++;
                 }
-                if (inRowCounter == 2 && j == 1 && gameField[i][2].getSymbol().equals(" ")) {
+                if (inRowCounter == 2 && j == 1 && gameField[i][2].equals(" ")) {
                     return new int[]{i, 2};
                 }
-                if (inRowCounter == 2 && j == 2 && gameField[i][1].getSymbol().equals(symbol) && gameField[i][0].getSymbol().equals(" ")) {
+                if (inRowCounter == 2 && j == 2 && gameField[i][1].equals(symbol) && gameField[i][0].equals(" ")) {
                     return new int[]{i, 0};
                 }
-                if (inRowCounter == 2 && j == 2 && gameField[i][1].getSymbol().equals(" ")) {
+                if (inRowCounter == 2 && j == 2 && gameField[i][1].equals(" ")) {
                     return new int[]{i, 1};
                 }
             }
@@ -96,16 +96,16 @@ public class AI {
         /* In column check */
         for (int j = 0; j < 3; j++) {
             for (int i = 0; i < 3; i++) {
-                if (gameField[i][j].getSymbol().equals(symbol)) {
+                if (gameField[i][j].equals(symbol)) {
                     inRowCounter++;
                 }
-                if (inRowCounter == 2 && i == 1 && gameField[2][j].getSymbol().equals(" ")) {
+                if (inRowCounter == 2 && i == 1 && gameField[2][j].equals(" ")) {
                     return new int[]{2, j};
                 }
-                if (inRowCounter == 2 && i == 2 && gameField[1][j].getSymbol().equals(symbol) && gameField[0][j].getSymbol().equals(" ")) {
+                if (inRowCounter == 2 && i == 2 && gameField[1][j].equals(symbol) && gameField[0][j].equals(" ")) {
                     return new int[]{0, j};
                 }
-                if (inRowCounter == 2 && i == 2 && gameField[1][j].getSymbol().equals(" ")) {
+                if (inRowCounter == 2 && i == 2 && gameField[1][j].equals(" ")) {
                     return new int[]{1, j};
                 }
             }
@@ -116,16 +116,16 @@ public class AI {
         /* Cross check 1st diagonal */
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                if (j == i * 2 && gameField[i][j].getSymbol().equals(symbol)) {
+                if (j == i * 2 && gameField[i][j].equals(symbol)) {
                     inRowCounter++;
                 }
-                if (inRowCounter == 2 && i == 1 && j == 1 && gameField[2][2].getSymbol().equals(" ")) {
+                if (inRowCounter == 2 && i == 1 && j == 1 && gameField[2][2].equals(" ")) {
                     return new int[]{2, 2};
                 }
-                if (inRowCounter == 2 && i == 2 && j == 2 && gameField[1][1].getSymbol().equals(symbol) && gameField[0][0].getSymbol().equals(" ")) {
+                if (inRowCounter == 2 && i == 2 && j == 2 && gameField[1][1].equals(symbol) && gameField[0][0].equals(" ")) {
                     return new int[]{0, 0};
                 }
-                if (inRowCounter == 2 && i == 2 && j == 2 && gameField[1][1].getSymbol().equals(" ")) {
+                if (inRowCounter == 2 && i == 2 && j == 2 && gameField[1][1].equals(" ")) {
                     return new int[]{1, 1};
                 }
             }
@@ -135,16 +135,16 @@ public class AI {
         /* Cross check 2nd diagonal */
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                if (j == -i + 2 && gameField[i][j].getSymbol().equals(symbol)) {
+                if (j == -i + 2 && gameField[i][j].equals(symbol)) {
                     inRowCounter++;
                 }
-                if (inRowCounter == 2 && i == 1 && j == 1 && gameField[2][0].getSymbol().equals(" ")) {
+                if (inRowCounter == 2 && i == 1 && j == 1 && gameField[2][0].equals(" ")) {
                     return new int[]{2, 0};
                 }
-                if (inRowCounter == 2 && i == 2 && j == 0 && gameField[1][1].getSymbol().equals(symbol) && gameField[0][2].getSymbol().equals(" ")) {
+                if (inRowCounter == 2 && i == 2 && j == 0 && gameField[1][1].equals(symbol) && gameField[0][2].equals(" ")) {
                     return new int[]{0, 2};
                 }
-                if (inRowCounter == 2 && i == 2 && j == 0 && gameField[1][1].getSymbol().equals(" ")) {
+                if (inRowCounter == 2 && i == 2 && j == 0 && gameField[1][1].equals(" ")) {
                     return new int[]{1, 1};
                 }
             }
@@ -153,17 +153,16 @@ public class AI {
         return new int[]{0, 0};
     }
 
-
-    public int[] bestMoveLevelHard(Field[][] gameField) {
+    public int[] bestMoveLevelHard(String[][] gameField) {
         int[] bestMove = new int[2];
 
         int bestScore = Integer.MIN_VALUE;
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                if (gameField[i][j].getSymbol().equals(" ")) {
-                    gameField[i][j].setSymbol(aiSymbol);
+                if (gameField[i][j].equals(" ")) {
+                    gameField[i][j] = aiSymbol;
                     int score = miniMax(gameField, false);
-                    gameField[i][j].setSymbol(" ");
+                    gameField[i][j] = " ";
                     if (score > bestScore) {
                         bestScore = score;
                         bestMove[0] = i;
@@ -176,7 +175,7 @@ public class AI {
         return bestMove;
     }
 
-    public int miniMax(Field[][] gameField, boolean isMaximizing){
+    public int miniMax(String[][] gameField, boolean isMaximizing){
 
         String opponentSymbol = aiSymbol.toUpperCase().equals("X") ? "O" : "X";
 
@@ -194,10 +193,10 @@ public class AI {
             int bestScore = Integer.MIN_VALUE;
             for (int i = 0; i < 3; i++) {
                 for (int j = 0; j < 3; j++) {
-                    if (gameField[i][j].getSymbol().equals(" ")) {
-                        gameField[i][j].setSymbol(aiSymbol);
+                    if (gameField[i][j].equals(" ")) {
+                        gameField[i][j] = aiSymbol;
                         int score = miniMax(gameField, false);
-                        gameField[i][j].setSymbol(" ");
+                        gameField[i][j] = " ";
                         bestScore = Math.max(score, bestScore);
                     }
                 }
@@ -207,10 +206,10 @@ public class AI {
             int bestScore = Integer.MAX_VALUE;
             for (int i = 0; i < 3; i++) {
                 for (int j = 0; j < 3; j++) {
-                    if (gameField[i][j].getSymbol().equals(" ")) {
-                        gameField[i][j].setSymbol(opponentSymbol);
+                    if (gameField[i][j].equals(" ")) {
+                        gameField[i][j] = opponentSymbol;
                         int score = miniMax(gameField, true);
-                        gameField[i][j].setSymbol(" ");
+                        gameField[i][j] = " ";
                         bestScore = Math.min(score, bestScore);
                     }
                 }
@@ -219,13 +218,13 @@ public class AI {
         }
     }
 
-    public boolean checkIfWinning(Field[][] gameField, String symbol) {
+    public boolean checkIfWinning(String[][] gameField, String symbol) {
         int inRowCounter = 0;
 
         /* In row check */
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                if (gameField[i][j].getSymbol().equals(symbol)) {
+                if (gameField[i][j].equals(symbol)) {
                     inRowCounter++;
                 }
             }
@@ -239,7 +238,7 @@ public class AI {
         /* In column check */
         for (int j = 0; j < 3; j++) {
             for (int i = 0; i < 3; i++) {
-                if (gameField[i][j].getSymbol().equals(symbol)) {
+                if (gameField[i][j].equals(symbol)) {
                     inRowCounter++;
                 }
             }
@@ -253,7 +252,7 @@ public class AI {
         /* Cross check 1st diagonal */
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                if (j == i && gameField[i][j].getSymbol().equals(symbol)) {
+                if (j == i && gameField[i][j].equals(symbol)) {
                     inRowCounter++;
                 }
             }
@@ -266,7 +265,7 @@ public class AI {
         /* Cross check 2nd diagonal */
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                if (j == -i + 2 && gameField[i][j].getSymbol().equals(symbol)) {
+                if (j == -i + 2 && gameField[i][j].equals(symbol)) {
                     inRowCounter++;
                 }
             }
@@ -274,11 +273,11 @@ public class AI {
         return inRowCounter == 3;
     }
 
-    public List<int[]> getAvailableSpots(Field[][] gameField) {
+    public List<int[]> getAvailableSpots(String[][] gameField) {
         List<int[]> availableSpots = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                if (gameField[i][j].getSymbol().equals(" ")) {
+                if (gameField[i][j].equals(" ")) {
                     availableSpots.add(new int[]{i, j});
                 }
             }

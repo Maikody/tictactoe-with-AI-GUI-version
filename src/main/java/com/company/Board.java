@@ -2,12 +2,12 @@ package com.company;
 
 public class Board {
 
-    private final Field[][] gameField;
+    private final String[][] gameField;
     private String turn = "X";
     private String winner;
 
     public Board() {
-        this.gameField = new Field[3][3];
+        this.gameField = new String[3][3];
         generateGameField();
     }
 
@@ -22,53 +22,31 @@ public class Board {
     private void generateGameField() {
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                gameField[i][j] = new Field(" ");
+                gameField[i][j] = " ";
             }
         }
     }
 
-    public Field[][] getGameField() {
+    public String[][] getGameField() {
         return gameField;
     }
 
     public String getSymbolAtField(int rowIndex, int columnIndex) {
-        return gameField[rowIndex][columnIndex].getSymbol();
+        return gameField[rowIndex][columnIndex];
     }
 
     public boolean isFieldMarked(int rowIndex, int columnIndex) {
-        return this.gameField[rowIndex][columnIndex].isMarked();
+        return !this.gameField[rowIndex][columnIndex].isBlank();
     }
 
-    public boolean markSymbol(int firstCoordinate, int secondCoordinate) {
+    public void markSymbol(int firstCoordinate, int secondCoordinate) {
         if (firstCoordinate > 3 || firstCoordinate < 0
-                || secondCoordinate > 3 || secondCoordinate < 0 || gameField[firstCoordinate][secondCoordinate].isMarked()){
-            return false;
+                || secondCoordinate > 3 || secondCoordinate < 0 || isFieldMarked(firstCoordinate, secondCoordinate)) {
+            return;
         }
 
-//        int xCounter = 0;
-//        int yCounter = 0;
-//
-//        for (int i = 0; i < 3; i++) {
-//            for (int j = 0; j < 3; j++) {
-//                if (gameField[i][j].getSymbol().equals("X")) {
-//                    xCounter++;
-//                } else if (gameField[i][j].getSymbol().equals("O")) {
-//                    yCounter++;
-//                }
-//            }
-//        }
-//
-//        String symbol;
-//        if (xCounter == yCounter) {
-//            symbol = "X";
-//        } else {
-//            symbol = "O";
-//        }
-
-        gameField[firstCoordinate][secondCoordinate].setSymbol(turn);
+        gameField[firstCoordinate][secondCoordinate] = turn;
         swapTurn();
-
-        return true;
     }
 
 
@@ -79,9 +57,9 @@ public class Board {
         /* In row check */
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                if (gameField[i][j].getSymbol().equals("X")) {
+                if (gameField[i][j].equals("X")) {
                     xInRowCounter++;
-                } else if (gameField[i][j].getSymbol().equals("O")) {
+                } else if (gameField[i][j].equals("O")) {
                     oInRowCounter++;
                 }
             }
@@ -104,9 +82,9 @@ public class Board {
         /* In column check */
         for (int j = 0; j < 3; j++) {
             for (int i = 0; i < 3; i++) {
-                if (gameField[i][j].getSymbol().equals("X")) {
+                if (gameField[i][j].equals("X")) {
                     xInRowCounter++;
-                } else if (gameField[i][j].getSymbol().equals("O")) {
+                } else if (gameField[i][j].equals("O")) {
                     oInRowCounter++;
                 }
             }
@@ -129,9 +107,9 @@ public class Board {
         /* Cross check 1st diagonal */
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                if (j == i && gameField[i][j].getSymbol().equals("X")) {
+                if (j == i && gameField[i][j].equals("X")) {
                     xInRowCounter++;
-                } else if (j == 2 && gameField[i][j].getSymbol().equals("O")) {
+                } else if (j == 2 && gameField[i][j].equals("O")) {
                     oInRowCounter++;
                 }
             }
@@ -152,9 +130,9 @@ public class Board {
         /* Cross check 2nd diagonal */
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                if (j == -i + 2 && gameField[i][j].getSymbol().equals("X")) {
+                if (j == -i + 2 && gameField[i][j].equals("X")) {
                     xInRowCounter++;
-                } else if (j == - i + 2 && gameField[i][j].getSymbol().equals("O")) {
+                } else if (j == - i + 2 && gameField[i][j].equals("O")) {
                     oInRowCounter++;
                 }
             }
@@ -172,7 +150,7 @@ public class Board {
 
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                if (gameField[i][j].getSymbol().equals(" ")) {
+                if (gameField[i][j].equals(" ")) {
                     return false;
                 }
             }
