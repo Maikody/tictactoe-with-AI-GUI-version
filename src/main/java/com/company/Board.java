@@ -49,7 +49,6 @@ public class Board {
         swapTurn();
     }
 
-
     public boolean checkStateOfTheGame() {
         int xInRowCounter = 0;
         int oInRowCounter = 0;
@@ -64,12 +63,10 @@ public class Board {
                 }
             }
             if (xInRowCounter == 3) {
-                System.out.println("X wins\n");
                 winner = "X";
                 return true;
             }
             if (oInRowCounter == 3) {
-                System.out.println("O wins\n");
                 winner = "O";
                 return true;
             }
@@ -89,12 +86,10 @@ public class Board {
                 }
             }
             if (xInRowCounter == 3) {
-                System.out.println("X wins\n");
                 winner = "X";
                 return true;
             }
             if (oInRowCounter == 3) {
-                System.out.println("O wins\n");
                 winner = "O";
                 return true;
             }
@@ -115,12 +110,10 @@ public class Board {
             }
         }
         if (xInRowCounter == 3) {
-            System.out.println("X wins\n");
             winner = "X";
             return true;
         }
         if (oInRowCounter == 3) {
-            System.out.println("O wins\n");
             winner = "O";
             return true;
         }
@@ -138,12 +131,10 @@ public class Board {
             }
         }
         if (xInRowCounter == 3) {
-            System.out.println("X wins\n");
             winner = "X";
             return true;
         }
         if (oInRowCounter == 3) {
-            System.out.println("O wins\n");
             winner = "O";
             return true;
         }
@@ -156,7 +147,6 @@ public class Board {
             }
         }
 
-        System.out.println("Draw\n");
         winner = " ";
         return true;
     }

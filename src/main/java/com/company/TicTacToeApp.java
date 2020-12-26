@@ -105,7 +105,7 @@ public class TicTacToeApp extends Application {
         for (Node child : tiles.getChildren()) {
             if (GridPane.getRowIndex(child) == move[0] && GridPane.getColumnIndex(child) == move[1]) {
                 Tile t = (Tile) child;
-                t.setText("" + board.getSymbolAtField(move[0], move[1]));
+                t.setText(board.getSymbolAtField(move[0], move[1]));
                 return;
             }
         }
@@ -121,7 +121,6 @@ public class TicTacToeApp extends Application {
                 public void handle(long now) {
                     if (board.checkStateOfTheGame()) {
                         endGame();
-                        System.out.println("End of the game!");
                     } else {
                         moveAI(player1);
                         moveAI(player2);
@@ -136,7 +135,6 @@ public class TicTacToeApp extends Application {
                 public void handle(long now) {
                     if (board.checkStateOfTheGame()) {
                         endGame();
-                        System.out.println("End of the game!");
                     } else {
                         if(board.getTurn().equals("O"))
                             moveAI(player2);
@@ -151,7 +149,6 @@ public class TicTacToeApp extends Application {
                 public void handle(long now) {
                     if (board.checkStateOfTheGame()) {
                         endGame();
-                        System.out.println("End of the game!");
                     } else {
                         if(board.getTurn().equals("X"))
                             moveAI(player1);
@@ -166,7 +163,6 @@ public class TicTacToeApp extends Application {
                 public void handle(long now) {
                     if (board.checkStateOfTheGame()) {
                         endGame();
-                        System.out.println("End of the game!");
                     }
                 }
             };

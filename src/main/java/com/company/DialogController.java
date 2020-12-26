@@ -15,8 +15,6 @@ public class DialogController {
         RadioButton player2Button = (RadioButton) player2.getSelectedToggle();
         String player1Data = player1Button.getText().toUpperCase();
         String player2Data = player2Button.getText().toUpperCase();
-        System.out.println("Player 1: " + player1Data);
-        System.out.println("Player 2: " + player2Data);
         Object player1 = choosePlayer(player1Data);
         Object player2 = choosePlayer(player2Data);
 
