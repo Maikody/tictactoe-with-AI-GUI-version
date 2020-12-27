@@ -104,7 +104,7 @@ public class Board {
             for (int j = 0; j < 3; j++) {
                 if (j == i && gameField[i][j].equals("X")) {
                     xInRowCounter++;
-                } else if (j == 2 && gameField[i][j].equals("O")) {
+                } else if (j == i && gameField[i][j].equals("O")) {
                     oInRowCounter++;
                 }
             }

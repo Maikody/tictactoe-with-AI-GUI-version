@@ -32,7 +32,7 @@ public class DialogController {
                 ai = new AI(AI.Level.EASY);
                 break;
             case ("AI - LEVEL MEDIUM"):
-                ai= new AI(AI.Level.MEDIUM);
+                ai = new AI(AI.Level.MEDIUM);
                 break;
             case ("AI - LEVEL HARD"):
                 ai = new AI(AI.Level.HARD);

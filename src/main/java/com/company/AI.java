@@ -43,11 +43,11 @@ public class AI {
             case MEDIUM:
                 int[] computerMediumMoves = chooseNextMoveLevelMedium(gameField, aiSymbol);
                 int[] opponentMediumMoves = chooseNextMoveLevelMedium(gameField, opponentSymbol);
-                if (computerMediumMoves[0] == 0 && opponentMediumMoves[0] == 0) {
+                if (computerMediumMoves[0] == -1 && opponentMediumMoves[0] == -1) {
                     int[] mediumMove = freeSpots.get(random.nextInt(freeSpots.size()));
                     computerFirstCoordinate = mediumMove[0];
                     computerSecondCoordinate = mediumMove[1];
-                } else if (computerMediumMoves[0] != 0 && opponentMediumMoves[0] == 0) {
+                } else if (computerMediumMoves[0] != -1 && opponentMediumMoves[0] == -1) {
                     computerFirstCoordinate = computerMediumMoves[0];
                     computerSecondCoordinate = computerMediumMoves[1];
                 } else {
@@ -116,7 +116,7 @@ public class AI {
         /* Cross check 1st diagonal */
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                if (j == i * 2 && gameField[i][j].equals(symbol)) {
+                if (j == i && gameField[i][j].equals(symbol)) {
                     inRowCounter++;
                 }
                 if (inRowCounter == 2 && i == 1 && j == 1 && gameField[2][2].equals(" ")) {
@@ -150,7 +150,7 @@ public class AI {
             }
         }
 
-        return new int[]{0, 0};
+        return new int[]{-1, -1};
     }
 
     public int[] bestMoveLevelHard(String[][] gameField) {

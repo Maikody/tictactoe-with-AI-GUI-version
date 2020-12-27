@@ -82,13 +82,19 @@ public class TicTacToeApp extends Application {
         dialog.getDialogPane().getButtonTypes().add(ButtonType.CANCEL);
 
         Object[] players = new Object[2];
+
         Optional<ButtonType> result = dialog.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
             DialogController controller = fxmlLoader.getController();
             players = controller.processResult();
+            generatePlayBoard();
         }
-
-        generatePlayBoard();
+        else {
+            for (Node child : tiles.getChildren()) {
+                Tile t = (Tile) child;
+                t.setDisable(true);
+            }
+        }
 
         return players;
     }
