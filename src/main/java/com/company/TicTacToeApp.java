@@ -16,6 +16,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.Optional;
 
 public class TicTacToeApp extends Application {
@@ -42,10 +43,9 @@ public class TicTacToeApp extends Application {
         primaryStage.getIcons().add(new Image(iconURL.toString()));
 
         primaryStage.show();
+        root.requestFocus();
 
-        Object[] players = showNewGameDialog();
-
-        gameLoop(players);
+        showNewGameDialog();
     }
 
     private void generatePlayBoard() {
@@ -66,9 +66,15 @@ public class TicTacToeApp extends Application {
     }
 
     @FXML
-    public Object[] showNewGameDialog() {
+    public void showNewGameDialog() {
+        if (gameTimer != null) {
+            gameTimer.stop();
+        }
+
         Dialog<ButtonType> dialog = new Dialog<>();
+        dialog.setTitle("New Game");
         dialog.initOwner(root.getScene().getWindow());
+
         FXMLLoader fxmlLoader = new FXMLLoader();
         try {
             URL url = Paths.get("src/main/resources/NewGameDialog.fxml").toUri().toURL();
@@ -81,13 +87,11 @@ public class TicTacToeApp extends Application {
         dialog.getDialogPane().getButtonTypes().add(ButtonType.OK);
         dialog.getDialogPane().getButtonTypes().add(ButtonType.CANCEL);
 
-        Object[] players = new Object[2];
-
         Optional<ButtonType> result = dialog.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
             DialogController controller = fxmlLoader.getController();
-            players = controller.processResult();
-            generatePlayBoard();
+            Object opponent = controller.processResult();
+            startNewGame(opponent);
         }
         else {
             for (Node child : tiles.getChildren()) {
@@ -96,7 +100,6 @@ public class TicTacToeApp extends Application {
             }
         }
 
-        return players;
     }
 
     @FXML
@@ -105,7 +108,6 @@ public class TicTacToeApp extends Application {
     }
 
     private void moveAI(AI ai) {
-        ai.setAiSymbol(board.getTurn());
         int[] move = ai.move(board.getGameField());
         board.markSymbol(move[0], move[1]);
         for (Node child : tiles.getChildren()) {
@@ -118,52 +120,24 @@ public class TicTacToeApp extends Application {
         board.swapTurn();
     }
 
-    public void gameLoop(Object[] players) {
-        if (players[0] instanceof AI && players[1] instanceof AI) {
-            AI player1 = (AI) players[0];
-            AI player2 = (AI) players[1];
+    public void gameLoop(Object opponent) {
+        if (opponent instanceof AI) {
+            AI aiPlayer = (AI) opponent;
             gameTimer = new AnimationTimer() {
                 @Override
                 public void handle(long now) {
                     if (board.checkStateOfTheGame()) {
                         endGame();
                     } else {
-                        moveAI(player1);
-                        moveAI(player2);
+                        if(board.getTurn().equals("X") && aiPlayer.getAiSymbol().equals("X"))
+                            moveAI(aiPlayer);
+                        else if(board.getTurn().equals("O") && aiPlayer.getAiSymbol().equals("O"))
+                            moveAI(aiPlayer);
                     }
                 }
             };
             gameTimer.start();
-        } else if (players[0] instanceof User && players[1] instanceof AI) {
-            AI player2 = (AI) players[1];
-            gameTimer = new AnimationTimer() {
-                @Override
-                public void handle(long now) {
-                    if (board.checkStateOfTheGame()) {
-                        endGame();
-                    } else {
-                        if(board.getTurn().equals("O"))
-                            moveAI(player2);
-                    }
-                }
-            };
-            gameTimer.start();
-        } else if (players[0] instanceof AI && players[1] instanceof User) {
-            AI player1 = (AI) players[0];
-            gameTimer = new AnimationTimer() {
-                @Override
-                public void handle(long now) {
-                    if (board.checkStateOfTheGame()) {
-                        endGame();
-                    } else {
-                        if(board.getTurn().equals("X"))
-                            moveAI(player1);
-                    }
-                }
-            };
-            gameTimer.start();
-        } else if (players[0] instanceof User && players[1] instanceof User) {
-            System.out.println("Both users");
+        } else if (opponent instanceof User) {
             gameTimer = new AnimationTimer() {
                 @Override
                 public void handle(long now) {
@@ -176,8 +150,28 @@ public class TicTacToeApp extends Application {
         }
     }
 
+    public void paintWinningCombo(List<int[]> winningCombo){
+        for (Node child : tiles.getChildren()) {
+            for(int[] coords: winningCombo) {
+                if (GridPane.getRowIndex(child) == coords[0]
+                        && GridPane.getColumnIndex(child) == coords[1]) {
+                    Tile t = (Tile) child;
+                    t.setStyle("-fx-text-fill: green; -fx-base: #b6e7c9;");
+                }
+            }
+        }
+    }
+
+    private void startNewGame(Object opponent){
+        generatePlayBoard();
+        root.requestFocus();
+        gameLoop(opponent);
+    }
+
     private void endGame() {
         gameTimer.stop();
+
+        paintWinningCombo(board.getWinningCombo());
 
         Alert gameOverAlert = new Alert(Alert.AlertType.INFORMATION, "", new ButtonType("New Game"));
         gameOverAlert.setTitle("Game Over");
@@ -192,8 +186,7 @@ public class TicTacToeApp extends Application {
 
         gameOverAlert.setOnHidden(e -> {
             gameOverAlert.close();
-            generatePlayBoard();
-            gameLoop(showNewGameDialog());
+            showNewGameDialog();
         });
 
         gameOverAlert.show();

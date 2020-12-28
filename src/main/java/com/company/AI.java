@@ -19,13 +19,16 @@ public class AI {
         this.level = level;
     }
 
+    public String getAiSymbol() {
+        return aiSymbol;
+    }
+
     public void setAiSymbol(String aiSymbol) {
         this.aiSymbol = aiSymbol;
     }
 
     public int[] move(String[][] gameField) {
 
-        System.out.println("Move by level \""+ level.name().toLowerCase() +"\":");
         int computerFirstCoordinate = 0;
         int computerSecondCoordinate = 0;
 
@@ -284,4 +287,5 @@ public class AI {
         }
         return availableSpots;
     }
+
 }

@@ -8,20 +8,22 @@ public class DialogController {
     @FXML
     private ToggleGroup player1;
     @FXML
-    private ToggleGroup player2;
+    private ToggleGroup userSymbol;
 
-    public Object[] processResult() {
+    private String userSymbolString;
+
+    public Object processResult() {
+        RadioButton userSymbolButton = (RadioButton) userSymbol.getSelectedToggle();
+        userSymbolString = userSymbolButton.getText();
+
         RadioButton player1Button = (RadioButton) player1.getSelectedToggle();
-        RadioButton player2Button = (RadioButton) player2.getSelectedToggle();
         String player1Data = player1Button.getText().toUpperCase();
-        String player2Data = player2Button.getText().toUpperCase();
-        Object player1 = choosePlayer(player1Data);
-        Object player2 = choosePlayer(player2Data);
 
-        return new Object[]{player1, player2};
+        return choosePlayer(player1Data);
     }
 
     public Object choosePlayer(String player){
+        String aiSymbol = userSymbolString.equals("X") ? "O" : "X";
         User user = null;
         AI ai = null;
         switch (player) {
@@ -30,12 +32,15 @@ public class DialogController {
                 break;
             case ("AI - LEVEL EASY"):
                 ai = new AI(AI.Level.EASY);
+                ai.setAiSymbol(aiSymbol);
                 break;
             case ("AI - LEVEL MEDIUM"):
                 ai = new AI(AI.Level.MEDIUM);
+                ai.setAiSymbol(aiSymbol);
                 break;
             case ("AI - LEVEL HARD"):
                 ai = new AI(AI.Level.HARD);
+                ai.setAiSymbol(aiSymbol);
                 break;
         }
         Object playerObject;

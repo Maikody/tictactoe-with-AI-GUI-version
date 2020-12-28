@@ -1,10 +1,14 @@
 package com.company;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Board {
 
     private final String[][] gameField;
     private String turn = "X";
     private String winner;
+    private List<int[]> winningCombo = new ArrayList<>();
 
     public Board() {
         this.gameField = new String[3][3];
@@ -52,13 +56,15 @@ public class Board {
     public boolean checkStateOfTheGame() {
         int xInRowCounter = 0;
         int oInRowCounter = 0;
-
+        winningCombo.clear();
         /* In row check */
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 if (gameField[i][j].equals("X")) {
+                    winningCombo.add(new int[]{i,j});
                     xInRowCounter++;
                 } else if (gameField[i][j].equals("O")) {
+                    winningCombo.add(new int[]{i,j});
                     oInRowCounter++;
                 }
             }
@@ -70,6 +76,7 @@ public class Board {
                 winner = "O";
                 return true;
             }
+            winningCombo.clear();
             xInRowCounter = 0;
             oInRowCounter = 0;
         }
@@ -80,8 +87,10 @@ public class Board {
         for (int j = 0; j < 3; j++) {
             for (int i = 0; i < 3; i++) {
                 if (gameField[i][j].equals("X")) {
+                    winningCombo.add(new int[]{i,j});
                     xInRowCounter++;
                 } else if (gameField[i][j].equals("O")) {
+                    winningCombo.add(new int[]{i,j});
                     oInRowCounter++;
                 }
             }
@@ -93,6 +102,7 @@ public class Board {
                 winner = "O";
                 return true;
             }
+            winningCombo.clear();
             xInRowCounter = 0;
             oInRowCounter = 0;
         }
@@ -103,8 +113,10 @@ public class Board {
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 if (j == i && gameField[i][j].equals("X")) {
+                    winningCombo.add(new int[]{i,j});
                     xInRowCounter++;
                 } else if (j == i && gameField[i][j].equals("O")) {
+                    winningCombo.add(new int[]{i,j});
                     oInRowCounter++;
                 }
             }
@@ -118,14 +130,17 @@ public class Board {
             return true;
         }
 
+        winningCombo.clear();
         xInRowCounter = 0;
         oInRowCounter = 0;
         /* Cross check 2nd diagonal */
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 if (j == -i + 2 && gameField[i][j].equals("X")) {
+                    winningCombo.add(new int[]{i,j});
                     xInRowCounter++;
                 } else if (j == - i + 2 && gameField[i][j].equals("O")) {
+                    winningCombo.add(new int[]{i,j});
                     oInRowCounter++;
                 }
             }
@@ -148,10 +163,15 @@ public class Board {
         }
 
         winner = " ";
+        winningCombo.clear();
         return true;
     }
 
     public String getWinner() {
         return winner;
+    }
+
+    public List<int[]> getWinningCombo() {
+        return winningCombo;
     }
 }
