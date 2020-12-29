@@ -179,9 +179,11 @@ public class TicTacToeApp extends Application {
 
         String winner = board.getWinner();
         if (winner.equals(" ")) {
-            gameOverAlert.setContentText("Draw!");
+            gameOverAlert.setContentText("Draw!" + "\n\nScoreboard:" + "\n\tX wins: " + board.getxWinningsCounter()
+                    + "\t\tO wins: " + board.getoWinningsCounter() + "\t\tDraws: " + board.getDrawsCounter());
         } else {
-            gameOverAlert.setContentText(winner + " wins!");
+            gameOverAlert.setContentText(winner + " wins!" + "\n\nScoreboard:" + "\n\tX wins: " + board.getxWinningsCounter()
+                    + "\t\tO wins: " + board.getoWinningsCounter() + "\t\tDraws: " + board.getDrawsCounter() );
         }
 
         gameOverAlert.setOnHidden(e -> {

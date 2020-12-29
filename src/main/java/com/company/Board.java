@@ -9,6 +9,10 @@ public class Board {
     private String turn = "X";
     private String winner;
     private List<int[]> winningCombo = new ArrayList<>();
+    private static int xWinningsCounter = 0;
+    private static int oWinningsCounter = 0;
+    private static int drawsCounter = 0;
+
 
     public Board() {
         this.gameField = new String[3][3];
@@ -70,10 +74,12 @@ public class Board {
             }
             if (xInRowCounter == 3) {
                 winner = "X";
+                xWinningsCounter++;
                 return true;
             }
             if (oInRowCounter == 3) {
                 winner = "O";
+                oWinningsCounter++;
                 return true;
             }
             winningCombo.clear();
@@ -96,10 +102,12 @@ public class Board {
             }
             if (xInRowCounter == 3) {
                 winner = "X";
+                xWinningsCounter++;
                 return true;
             }
             if (oInRowCounter == 3) {
                 winner = "O";
+                oWinningsCounter++;
                 return true;
             }
             winningCombo.clear();
@@ -123,10 +131,12 @@ public class Board {
         }
         if (xInRowCounter == 3) {
             winner = "X";
+            xWinningsCounter++;
             return true;
         }
         if (oInRowCounter == 3) {
             winner = "O";
+            oWinningsCounter++;
             return true;
         }
 
@@ -147,10 +157,12 @@ public class Board {
         }
         if (xInRowCounter == 3) {
             winner = "X";
+            xWinningsCounter++;
             return true;
         }
         if (oInRowCounter == 3) {
             winner = "O";
+            oWinningsCounter++;
             return true;
         }
 
@@ -163,6 +175,7 @@ public class Board {
         }
 
         winner = " ";
+        drawsCounter++;
         winningCombo.clear();
         return true;
     }
@@ -173,5 +186,17 @@ public class Board {
 
     public List<int[]> getWinningCombo() {
         return winningCombo;
+    }
+
+    public int getxWinningsCounter() {
+        return xWinningsCounter;
+    }
+
+    public int getoWinningsCounter() {
+        return oWinningsCounter;
+    }
+
+    public int getDrawsCounter() {
+        return drawsCounter;
     }
 }
