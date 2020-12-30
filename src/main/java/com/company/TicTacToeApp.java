@@ -170,19 +170,20 @@ public class TicTacToeApp extends Application {
     private void endGame() {
         gameTimer.stop();
 
-        paintWinningCombo(board.getWinningCombo());
+        Label scores = (Label) root.getBottom();
+        scores.setText("X wins: " + board.getxWinningsCounter()
+                + "\tO wins: " + board.getoWinningsCounter() + "\tDraws: " + board.getDrawsCounter() );
 
+        paintWinningCombo(board.getWinningCombo());
         Alert gameOverAlert = new Alert(Alert.AlertType.INFORMATION, "", new ButtonType("New Game"));
         gameOverAlert.setTitle("Game Over");
         gameOverAlert.setHeaderText(null);
 
         String winner = board.getWinner();
         if (winner.equals(" ")) {
-            gameOverAlert.setContentText("Draw!" + "\n\nScoreboard:" + "\n\tX wins: " + board.getxWinningsCounter()
-                    + "\t\tO wins: " + board.getoWinningsCounter() + "\t\tDraws: " + board.getDrawsCounter());
+            gameOverAlert.setContentText("Draw!");
         } else {
-            gameOverAlert.setContentText(winner + " wins!" + "\n\nScoreboard:" + "\n\tX wins: " + board.getxWinningsCounter()
-                    + "\t\tO wins: " + board.getoWinningsCounter() + "\t\tDraws: " + board.getDrawsCounter() );
+            gameOverAlert.setContentText(winner + " wins!");
         }
 
         gameOverAlert.setOnHidden(e -> {

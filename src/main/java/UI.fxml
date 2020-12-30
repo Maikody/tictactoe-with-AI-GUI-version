@@ -6,6 +6,8 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.SeparatorMenuItem?>
+<?import javafx.scene.control.Label?>
+<?import javafx.geometry.Insets?>
 <BorderPane fx:id="root" prefHeight="600.0" prefWidth="600.0"
             fx:controller="com.company.TicTacToeApp"
             xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml">
@@ -18,4 +20,11 @@
         </Menu>
     </MenuBar>
 </top>
+    <bottom>
+            <Label text="X wins: 0  O wins: 0  Draws: 0">
+                <padding>
+                    <Insets left="10"/>
+                </padding>
+            </Label>
+    </bottom>
 </BorderPane>
