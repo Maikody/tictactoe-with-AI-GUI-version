@@ -28,7 +28,6 @@ public class AI {
     }
 
     public int[] move(String[][] gameField) {
-
         int computerFirstCoordinate = 0;
         int computerSecondCoordinate = 0;
 

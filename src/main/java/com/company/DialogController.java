@@ -6,7 +6,7 @@ import javafx.scene.control.ToggleGroup;
 
 public class DialogController {
     @FXML
-    private ToggleGroup player1;
+    private ToggleGroup opponent;
     @FXML
     private ToggleGroup userSymbol;
 
@@ -16,10 +16,10 @@ public class DialogController {
         RadioButton userSymbolButton = (RadioButton) userSymbol.getSelectedToggle();
         userSymbolString = userSymbolButton.getText();
 
-        RadioButton player1Button = (RadioButton) player1.getSelectedToggle();
-        String player1Data = player1Button.getText().toUpperCase();
+        RadioButton opponentButton = (RadioButton) opponent.getSelectedToggle();
+        String opponentData = opponentButton.getText().toUpperCase();
 
-        return choosePlayer(player1Data);
+        return choosePlayer(opponentData);
     }
 
     public Object choosePlayer(String player){

@@ -65,10 +65,10 @@ public class Board {
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 if (gameField[i][j].equals("X")) {
-                    winningCombo.add(new int[]{i,j});
+                    winningCombo.add(new int[]{i, j});
                     xInRowCounter++;
                 } else if (gameField[i][j].equals("O")) {
-                    winningCombo.add(new int[]{i,j});
+                    winningCombo.add(new int[]{i, j});
                     oInRowCounter++;
                 }
             }
@@ -93,10 +93,10 @@ public class Board {
         for (int j = 0; j < 3; j++) {
             for (int i = 0; i < 3; i++) {
                 if (gameField[i][j].equals("X")) {
-                    winningCombo.add(new int[]{i,j});
+                    winningCombo.add(new int[]{i, j});
                     xInRowCounter++;
                 } else if (gameField[i][j].equals("O")) {
-                    winningCombo.add(new int[]{i,j});
+                    winningCombo.add(new int[]{i, j});
                     oInRowCounter++;
                 }
             }
@@ -121,10 +121,10 @@ public class Board {
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 if (j == i && gameField[i][j].equals("X")) {
-                    winningCombo.add(new int[]{i,j});
+                    winningCombo.add(new int[]{i, j});
                     xInRowCounter++;
                 } else if (j == i && gameField[i][j].equals("O")) {
-                    winningCombo.add(new int[]{i,j});
+                    winningCombo.add(new int[]{i, j});
                     oInRowCounter++;
                 }
             }
@@ -147,10 +147,10 @@ public class Board {
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 if (j == -i + 2 && gameField[i][j].equals("X")) {
-                    winningCombo.add(new int[]{i,j});
+                    winningCombo.add(new int[]{i, j});
                     xInRowCounter++;
                 } else if (j == - i + 2 && gameField[i][j].equals("O")) {
-                    winningCombo.add(new int[]{i,j});
+                    winningCombo.add(new int[]{i, j});
                     oInRowCounter++;
                 }
             }

@@ -13,15 +13,15 @@
     <content>
         <GridPane vgap="20.0" alignment="TOP_CENTER">
             <fx:define>
-                <ToggleGroup fx:id="player1"/>
+                <ToggleGroup fx:id="opponent"/>
             </fx:define>
 
             <Label text="Choose your opponent:" alignment="CENTER"/>
 
-            <RadioButton text="User" toggleGroup="$player1" GridPane.rowIndex="1" selected="true" />
-            <RadioButton text="AI - Level easy" toggleGroup="$player1" GridPane.rowIndex="2"/>
-            <RadioButton text="AI - Level medium" toggleGroup="$player1" GridPane.rowIndex="3"/>
-            <RadioButton text="AI - Level hard" toggleGroup="$player1" GridPane.rowIndex="4"/>
+            <RadioButton text="User" toggleGroup="$opponent" GridPane.rowIndex="1" selected="true"/>
+            <RadioButton text="AI - Level easy" toggleGroup="$opponent" GridPane.rowIndex="2"/>
+            <RadioButton text="AI - Level medium" toggleGroup="$opponent" GridPane.rowIndex="3"/>
+            <RadioButton text="AI - Level hard" toggleGroup="$opponent" GridPane.rowIndex="4"/>
 
             <fx:define>
                 <ToggleGroup fx:id="userSymbol"/>
@@ -34,6 +34,7 @@
 
         </GridPane>
     </content>
+
     <padding>
         <Insets left="10.0" top="5.0"/>
     </padding>

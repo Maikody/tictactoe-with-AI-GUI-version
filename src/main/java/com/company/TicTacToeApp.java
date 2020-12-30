@@ -31,7 +31,6 @@ public class TicTacToeApp extends Application {
     @FXML
     public MenuItem exitMenu;
 
-
     @Override
     public void start(Stage primaryStage) throws Exception {
         URL url = Paths.get("src/main/java/UI.fxml").toUri().toURL();
