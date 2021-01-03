@@ -188,11 +188,11 @@ public class Board {
         return winningCombo;
     }
 
-    public int getxWinningsCounter() {
+    public int getXWinningsCounter() {
         return xWinningsCounter;
     }
 
-    public int getoWinningsCounter() {
+    public int getOWinningsCounter() {
         return oWinningsCounter;
     }
 

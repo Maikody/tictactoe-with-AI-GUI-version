@@ -30,6 +30,8 @@ public class TicTacToeApp extends Application {
     public MenuItem newGameMenu;
     @FXML
     public MenuItem exitMenu;
+    @FXML
+    public MenuItem statsMenu;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -38,7 +40,8 @@ public class TicTacToeApp extends Application {
         generatePlayBoard();
         primaryStage.setTitle("TicTacToe Game");
         primaryStage.setScene(new Scene(root, 600, 600));
-        URL iconURL = Paths.get("largeIcon.png").toUri().toURL();
+        primaryStage.setResizable(false);
+        URL iconURL = Paths.get("src/main/resources/largeIcon.png").toUri().toURL();
         primaryStage.getIcons().add(new Image(iconURL.toString()));
 
         primaryStage.show();
@@ -76,7 +79,7 @@ public class TicTacToeApp extends Application {
 
         FXMLLoader fxmlLoader = new FXMLLoader();
         try {
-            URL url = Paths.get("src/main/resources/NewGameDialog.fxml").toUri().toURL();
+            URL url = Paths.get("src/main/java/NewGameDialog.fxml").toUri().toURL();
             fxmlLoader.setLocation(url);
             dialog.getDialogPane().setContent(fxmlLoader.load());
         } catch (IOException e){
@@ -161,7 +164,7 @@ public class TicTacToeApp extends Application {
         }
     }
 
-    private void startNewGame(Object opponent){
+    private void startNewGame(Object opponent) {
         generatePlayBoard();
         root.requestFocus();
         gameLoop(opponent);
@@ -171,13 +174,14 @@ public class TicTacToeApp extends Application {
         gameTimer.stop();
 
         Label scores = (Label) root.getBottom();
-        scores.setText("X wins: " + board.getxWinningsCounter()
-                + "\tO wins: " + board.getoWinningsCounter() + "\tDraws: " + board.getDrawsCounter() );
+        scores.setText("X wins: " + board.getXWinningsCounter()
+                + "\tO wins: " + board.getOWinningsCounter() + "\tDraws: " + board.getDrawsCounter());
 
         paintWinningCombo(board.getWinningCombo());
         Alert gameOverAlert = new Alert(Alert.AlertType.INFORMATION, "", new ButtonType("New Game"));
         gameOverAlert.setTitle("Game Over");
         gameOverAlert.setHeaderText(null);
+        gameOverAlert.initOwner(root.getScene().getWindow());
 
         String winner = board.getWinner();
         if (winner.equals(" ")) {
@@ -194,4 +198,41 @@ public class TicTacToeApp extends Application {
         gameOverAlert.show();
     }
 
+    public void showStatsDialog(){
+
+        Alert statsAlert = new Alert(Alert.AlertType.INFORMATION);
+        statsAlert.setTitle("Statistics");
+        statsAlert.setHeaderText(null);
+        statsAlert.initOwner(root.getScene().getWindow());
+
+        statsAlert.setContentText("Games played : " + (Statistics.getInstance().getGamesPlayed() + board.getXWinningsCounter()
+                + board.getOWinningsCounter() + board.getDrawsCounter())
+                + "\nX wins: " + (Statistics.getInstance().getXWinsTotalSum() + board.getXWinningsCounter())
+                + "\tO wins: " + (Statistics.getInstance().getOWinsTotalSum() + board.getOWinningsCounter())
+                + "\tDraws: " + (Statistics.getInstance().getDrawsTotalSum() + board.getDrawsCounter()));
+
+        statsAlert.setOnHidden(e -> {
+            statsAlert.close();
+        });
+
+        statsAlert.show();
+    }
+
+    @Override
+    public void init() throws Exception {
+        try {
+            Statistics.getInstance().loadStatistics();
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    @Override
+    public void stop() throws Exception {
+        try {
+            Statistics.getInstance().saveStatistics();
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+    }
 }
