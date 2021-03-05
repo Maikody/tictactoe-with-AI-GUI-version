@@ -13,16 +13,20 @@ public class Tile extends Button {
         this.rowIndex = rowIndex;
         this.columnIndex = columnIndex;
 
-        setPrefSize(200.0, 200.0);
-        setAlignment(Pos.CENTER);
-        setFont(Font.font(80));
-        setTextAlignment(TextAlignment.CENTER);
-        setText(symbol);
+        setTileProperties(symbol);
 
         setOnMouseClicked(event -> {
             board.markSymbol(this.rowIndex, this.columnIndex);
             setText(board.getSymbolAtField(this.rowIndex, this.columnIndex));
         });
+    }
+
+    void setTileProperties(String symbol) {
+        setPrefSize(200.0, 200.0);
+        setAlignment(Pos.CENTER);
+        setFont(Font.font(80));
+        setTextAlignment(TextAlignment.CENTER);
+        setText(symbol);
     }
 
 }
