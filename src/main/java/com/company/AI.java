@@ -73,9 +73,28 @@ public class AI {
     }
 
     public int[] chooseNextMoveLevelMedium(String[][] gameField, String symbol) {
+        int[] possibleMove = checkForPossibleMoveInRows(gameField, symbol);
+        if (possibleMove != null)
+            return possibleMove;
+
+        possibleMove = checkForPossibleMoveInColumns(gameField, symbol);
+        if (possibleMove != null)
+            return possibleMove;
+
+        possibleMove = checkForPossibleMoveInFirstDiagonal(gameField, symbol);
+        if (possibleMove != null)
+            return possibleMove;
+
+        possibleMove = checkForPossibleMoveInSecondDiagonal(gameField, symbol);
+        if (possibleMove != null)
+            return possibleMove;
+
+        return new int[]{-1, -1};
+    }
+
+    private int[] checkForPossibleMoveInRows(String[][] gameField, String symbol) {
         int inRowCounter = 0;
 
-        /* In row check */
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 if (gameField[i][j].equals(symbol)) {
@@ -94,8 +113,12 @@ public class AI {
             inRowCounter = 0;
         }
 
-        inRowCounter = 0;
-        /* In column check */
+        return null;
+    }
+
+    private int[] checkForPossibleMoveInColumns(String[][] gameField, String symbol) {
+        int inRowCounter = 0;
+
         for (int j = 0; j < 3; j++) {
             for (int i = 0; i < 3; i++) {
                 if (gameField[i][j].equals(symbol)) {
@@ -114,8 +137,12 @@ public class AI {
             inRowCounter = 0;
         }
 
-        inRowCounter = 0;
-        /* Cross check 1st diagonal */
+        return null;
+    }
+
+    private int[] checkForPossibleMoveInFirstDiagonal(String[][] gameField, String symbol) {
+        int inRowCounter = 0;
+
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 if (j == i && gameField[i][j].equals(symbol)) {
@@ -133,8 +160,12 @@ public class AI {
             }
         }
 
-        inRowCounter = 0;
-        /* Cross check 2nd diagonal */
+        return null;
+    }
+
+    private int[] checkForPossibleMoveInSecondDiagonal(String[][] gameField, String symbol) {
+        int inRowCounter = 0;
+
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 if (j == -i + 2 && gameField[i][j].equals(symbol)) {
@@ -152,7 +183,7 @@ public class AI {
             }
         }
 
-        return new int[]{-1, -1};
+        return null;
     }
 
     public int[] bestMoveLevelHard(String[][] gameField) {
@@ -221,37 +252,47 @@ public class AI {
     }
 
     public boolean checkIfWinning(String[][] gameField, String symbol) {
+        return isWinningInRows(gameField, symbol) || isWinningInColumns(gameField, symbol)
+                || isWinningInFirstDiagonal(gameField, symbol) || isWinningInSecondDiagonal(gameField, symbol);
+    }
+
+    private boolean isWinningInRows(String[][] gameField, String symbol) {
         int inRowCounter = 0;
 
-        /* In row check */
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 if (gameField[i][j].equals(symbol)) {
-                    inRowCounter++;
+                    if (++inRowCounter == 3) {
+                        return true;
+                    }
                 }
-            }
-            if (inRowCounter == 3) {
-                return true;
             }
             inRowCounter = 0;
         }
 
-        inRowCounter = 0;
-        /* In column check */
+        return false;
+    }
+
+    private boolean isWinningInColumns(String[][] gameField, String symbol) {
+        int inRowCounter = 0;
+
         for (int j = 0; j < 3; j++) {
             for (int i = 0; i < 3; i++) {
                 if (gameField[i][j].equals(symbol)) {
-                    inRowCounter++;
+                    if (++inRowCounter == 3) {
+                        return true;
+                    }
                 }
-            }
-            if (inRowCounter == 3) {
-                return true;
             }
             inRowCounter = 0;
         }
 
-        inRowCounter = 0;
-        /* Cross check 1st diagonal */
+        return false;
+    }
+
+    boolean isWinningInFirstDiagonal(String[][] gameField, String symbol) {
+        int inRowCounter = 0;
+
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 if (j == i && gameField[i][j].equals(symbol)) {
@@ -259,12 +300,13 @@ public class AI {
                 }
             }
         }
-        if (inRowCounter == 3) {
-            return true;
-        }
 
-        inRowCounter = 0;
-        /* Cross check 2nd diagonal */
+        return inRowCounter == 3;
+    }
+
+    boolean isWinningInSecondDiagonal(String[][] gameField, String symbol) {
+        int inRowCounter = 0;
+
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 if (j == -i + 2 && gameField[i][j].equals(symbol)) {
@@ -272,11 +314,13 @@ public class AI {
                 }
             }
         }
+
         return inRowCounter == 3;
     }
 
     public List<int[]> getAvailableSpots(String[][] gameField) {
         List<int[]> availableSpots = new ArrayList<>();
+
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 if (gameField[i][j].equals(" ")) {
@@ -284,6 +328,7 @@ public class AI {
                 }
             }
         }
+
         return availableSpots;
     }
 
