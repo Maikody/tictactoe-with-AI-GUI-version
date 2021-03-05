@@ -12,6 +12,11 @@ public class DialogController {
 
     private String userSymbolString;
 
+    private static final String USER = "USER";
+    private static final String AIEASY = "AI - LEVEL EASY";
+    private static final String AIMEDIUM = "AI - LEVEL MEDIUM";
+    private static final String AIHARD = "AI - LEVEL HARD";
+
     public Object processResult() {
         RadioButton userSymbolButton = (RadioButton) userSymbol.getSelectedToggle();
         userSymbolString = userSymbolButton.getText();
@@ -27,18 +32,18 @@ public class DialogController {
         User user = null;
         AI ai = null;
         switch (player) {
-            case ("USER"):
+            case (USER):
                 user = new User("User");
                 break;
-            case ("AI - LEVEL EASY"):
+            case (AIEASY):
                 ai = new AI(AI.Level.EASY);
                 ai.setAiSymbol(aiSymbol);
                 break;
-            case ("AI - LEVEL MEDIUM"):
+            case (AIMEDIUM):
                 ai = new AI(AI.Level.MEDIUM);
                 ai.setAiSymbol(aiSymbol);
                 break;
-            case ("AI - LEVEL HARD"):
+            case (AIHARD):
                 ai = new AI(AI.Level.HARD);
                 ai.setAiSymbol(aiSymbol);
                 break;
