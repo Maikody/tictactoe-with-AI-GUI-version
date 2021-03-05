@@ -13,7 +13,6 @@ public class Board {
     private static int oWinningsCounter = 0;
     private static int drawsCounter = 0;
 
-
     public Board() {
         this.gameField = new String[3][3];
         generateGameField();
@@ -58,10 +57,15 @@ public class Board {
     }
 
     public boolean checkStateOfTheGame() {
+        if (isWinnerInRows() || isWinnerInColumns() || isWinnerInFirstDiagonal() || isWinnerInSecondDiagonal())
+            return true;
+        else return isBoardFilled();
+    }
+
+    private boolean isWinnerInRows() {
         int xInRowCounter = 0;
         int oInRowCounter = 0;
-        winningCombo.clear();
-        /* In row check */
+
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 if (gameField[i][j].equals("X")) {
@@ -87,9 +91,13 @@ public class Board {
             oInRowCounter = 0;
         }
 
-        xInRowCounter = 0;
-        oInRowCounter = 0;
-        /* In column check */
+        return false;
+    }
+
+    public boolean isWinnerInColumns() {
+        int xInRowCounter = 0;
+        int oInRowCounter = 0;
+
         for (int j = 0; j < 3; j++) {
             for (int i = 0; i < 3; i++) {
                 if (gameField[i][j].equals("X")) {
@@ -115,9 +123,13 @@ public class Board {
             oInRowCounter = 0;
         }
 
-        xInRowCounter = 0;
-        oInRowCounter = 0;
-        /* Cross check 1st diagonal */
+        return false;
+    }
+
+    public boolean isWinnerInFirstDiagonal() {
+        int xInRowCounter = 0;
+        int oInRowCounter = 0;
+
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 if (j == i && gameField[i][j].equals("X")) {
@@ -141,9 +153,13 @@ public class Board {
         }
 
         winningCombo.clear();
-        xInRowCounter = 0;
-        oInRowCounter = 0;
-        /* Cross check 2nd diagonal */
+        return false;
+    }
+
+    public boolean isWinnerInSecondDiagonal() {
+        int xInRowCounter = 0;
+        int oInRowCounter = 0;
+
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 if (j == -i + 2 && gameField[i][j].equals("X")) {
@@ -166,6 +182,11 @@ public class Board {
             return true;
         }
 
+        winningCombo.clear();
+        return false;
+    }
+
+    public boolean isBoardFilled() {
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 if (gameField[i][j].equals(" ")) {
@@ -176,7 +197,7 @@ public class Board {
 
         winner = " ";
         drawsCounter++;
-        winningCombo.clear();
+
         return true;
     }
 
